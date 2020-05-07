@@ -26,7 +26,7 @@ namespace Preferanse.Controllers
         }
 
         [HttpGet()]
-        public IEnumerable<Card> Get()
+        public Game Get()
         {
             var deck = new Deck();
 
@@ -38,6 +38,7 @@ namespace Preferanse.Controllers
             var player1Cards = new List<Card>();
             var player2Cards = new List<Card>();
             var player3Cards = new List<Card>();
+            
             for(var i= 0; i<=4; i++)
             {
                 player1Cards.AddRange(list.Skip(i * 6 ).Take(2));
@@ -45,7 +46,15 @@ namespace Preferanse.Controllers
                 player3Cards.AddRange(list.Skip(i * 6 + 4 ).Take(2));
             }
 
-            return player1Cards;
+            var response = new Game();
+            response.Player1.Cards = player1Cards;
+            response.Player1.PlayerName = "Sam";
+            response.Player2.Cards = player2Cards;
+            response.Player2.PlayerName = "Artem";
+            response.Player3.Cards = player3Cards;
+            response.Player3.PlayerName = "Valera";
+
+            return response;
         }
     }
 }

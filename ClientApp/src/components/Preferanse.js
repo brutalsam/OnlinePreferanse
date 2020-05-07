@@ -6,7 +6,7 @@ export class Preferanse extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { cards: [], loading: true };
+    this.state = { dame: null, loading: true };
   }
 
   componentDidMount() {
@@ -19,7 +19,7 @@ export class Preferanse extends Component {
         <em>Loading...</em>
       </p>
     ) : (
-      Preferanse.renderCards(this.state.cards)
+      Preferanse.renderCards(this.state.game.player1)
     );
 
     return (
@@ -30,13 +30,13 @@ export class Preferanse extends Component {
     );
   }
 
-  static renderCards(cards) {
+  static renderCards(player) {
     const flexDiv = {
       display: "flex",
     };
     return (
       <div>
-        <Deal cards={cards} playerName="Sam Hzhesiak"></Deal>
+        <Deal cards={player.cards} playerName={player.playerName}></Deal>
       </div>
     );
   }
@@ -44,6 +44,6 @@ export class Preferanse extends Component {
   async populateCardsData() {
     const response = await fetch("preferanse");
     const data = await response.json();
-    this.setState({ cards: data, loading: false });
+    this.setState({ game: data, loading: false });
   }
 }

@@ -1,20 +1,32 @@
 import React, { Component } from "react";
 
-
 export default class Card extends Component {
   static displayName = Card.name;
 
   constructor(props) {
     super(props);
-    this.state = { value: props.value, suit: props.suit, hover: false };
+    this.state = {
+      value: props.value,
+      suit: props.suit,
+      hover: false,
+      isSelected: props.isSelected,
+    };
     if (!this.props.value) {
       throw new Error("please set [value] of a card");
     }
     if (!this.props.suit) {
       throw new Error("please set [suit] of a card");
     }
+
     this.toggleHover = this.toggleHover.bind(this);
   }
+
+  componentDidUpdate(prevProps) {
+    if(this.props.isSelected !== prevProps.isSelected)
+    {
+      this.setState({isSelected:this.props.isSelected});
+    }
+  } 
 
   toggleHover() {
     this.setState({ hover: !this.state.hover });
@@ -25,12 +37,13 @@ export default class Card extends Component {
       borderRadius: "25px",
       border: "2px solid #73AD21",
       padding: "20px",
-      width: "105px",
+      width: "100px",
       height: "140px",
+      backgroundColor: this.state.isSelected ? "lightblue" : "white",
       color: this.getCardColor(this.state.suit),
       fontSize: "40px",
       margin: "5px",
-      marginTop: this.state.hover ? "20px" : "40px",
+      marginTop: this.state.hover || this.state.isSelected ? "20px" : "40px",
     };
     return (
       <div

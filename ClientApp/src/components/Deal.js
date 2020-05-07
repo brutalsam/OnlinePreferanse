@@ -9,36 +9,58 @@ export default class Deal extends Component {
     this.state = {
       cards: props.cards,
       playerName: props.playerName,
+      selectedId: -1,
     };
+
+    this.setActive = this.setActive.bind(this);
   }
 
-  //   render() {
-  //     return (
-  //       <div>
-  //         <h1 id="tabelLabel">{this.state.playerName} cards</h1>
-  //         {Deal.renderCards(this.state.cards)}
-  //       </div>
-  //     );
-  //   }
+  setActive(id)  {
+    this.setState({ selectedId: id });
+  }
+
   render() {
-    return Deal.renderCards(this.state.cards);
+    return (
+      <div>
+        <h2 id="tabelLabel">{this.state.playerName}</h2>
+        <div>{this.renderCards(this.state.cards)}</div>
+      </div>
+    );
   }
 
-  static renderCards(cards) {
+  renderCard(card, id) {
+    return (
+      <div onClick={() =>this.setActive(id)}>
+        <Card
+          value={card.value}
+          suit={card.suit}
+          isSelected={this.state.selectedId === id}
+          key={card.id}
+          
+        ></Card>
+      </div>
+    );
+  }
+
+  renderCards(cards) {
     const flexDiv = {
       display: "flex",
       height: "200px",
     };
     return (
-      <div id="cardsDeal">
-        <h2 id="tabelLabel">Palyer 1</h2>
-        <div style={flexDiv}>
-          {cards.map((card) => (
-            <div>
-              <Card value={card.value} suit={card.suit}></Card>
-            </div>
-          ))}
-        </div>
+      <div style={flexDiv}>
+        {cards.map((card, id) =>
+          //   <div>
+          //     <Card
+          //       value={card.value}
+          //       suit={card.suit}
+          //       //selected={this.state.selectedId === card.id}
+          //       key={card.id}
+          //       //onClick={this.setActive(card.id)}
+          //     ></Card>
+          //   </div>
+          this.renderCard(card, id)
+        )}
       </div>
     );
   }
