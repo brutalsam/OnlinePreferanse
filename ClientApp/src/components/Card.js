@@ -14,16 +14,13 @@ export default class Card extends Component {
       throw new Error("please set [suit] of a card");
     }
     this.toggleHover = this.toggleHover.bind(this);
-    console.log(this.state.hover);
   }
 
   toggleHover() {
     this.setState({ hover: !this.state.hover });
-    console.log(this.state.hover);
   }
 
   render() {
-    console.log('alala');
     const playingCard = {
       borderRadius: "25px",
       border: "2px solid #73AD21",

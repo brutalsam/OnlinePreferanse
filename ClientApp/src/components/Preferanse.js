@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Card from "./Card";
+import Deal from "./Deal"
 
 export class Preferanse extends Component {
   static displayName = Preferanse.name;
@@ -24,8 +24,7 @@ export class Preferanse extends Component {
 
     return (
       <div>
-        <h1 id="tabelLabel">Player1 cards</h1>
-        <p>This component demonstrates fetching data from the server.</p>
+        <h1 id="tabelLabel">Game 1</h1>
         {contents}
       </div>
     );
@@ -34,15 +33,10 @@ export class Preferanse extends Component {
   static renderCards(cards) {
     const flexDiv = {
       display: "flex",
-      height: "200px",
     };
     return (
-      <div style={flexDiv}>
-        {cards.map((card) => (
-          <div>
-            <Card value={card.value} suit={card.suit}></Card>
-          </div>
-        ))}
+      <div>
+        <Deal cards={cards} playerName="Sam Hzhesiak"></Deal>
       </div>
     );
   }
