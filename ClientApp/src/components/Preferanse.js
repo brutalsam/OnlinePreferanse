@@ -19,7 +19,7 @@ export class Preferanse extends Component {
         <em>Loading...</em>
       </p>
     ) : (
-      Preferanse.renderCards(this.state.game.player1)
+      Preferanse.renderDeals(this.state.game)
     );
 
     return (
@@ -30,13 +30,15 @@ export class Preferanse extends Component {
     );
   }
 
-  static renderCards(player) {
+  static renderDeals(game) {
     const flexDiv = {
       display: "flex",
     };
     return (
       <div>
-        <Deal cards={player.cards} playerName={player.playerName}></Deal>
+        <Deal cards={game.player2.cards} playerName={game.player2.playerName}></Deal>
+        <Deal cards={game.player3.cards} playerName={game.player3.playerName}></Deal>
+        <Deal cards={game.player1.cards} playerName={game.player1.playerName}></Deal>
       </div>
     );
   }

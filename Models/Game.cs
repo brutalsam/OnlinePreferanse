@@ -26,13 +26,23 @@ namespace Preferanse.Models
             Player2 = new Player();
             Player3 = new Player();
             Rounds = new List<Round>();
+            //Dealer
+            //Deal CurrentDeal
+            //List<Bets> =>
+            //Bet => List<Deals> 
+            //         Contract
         }
     }
 
     public class Round
     {
+        public Contract RoundContract {get; set;}
         public Card Player1 { get; set; }
         public Card Player2 { get; set; }
         public Card Player3 { get; set; }
+    }
+
+    public class Contract
+    {
     }
 }

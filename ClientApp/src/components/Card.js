@@ -37,7 +37,7 @@ export default class Card extends Component {
       borderRadius: "25px",
       border: "2px solid #73AD21",
       padding: "20px",
-      width: "100px",
+      width: "105px",
       height: "140px",
       backgroundColor: this.state.isSelected ? "lightblue" : "white",
       color: this.getCardColor(this.state.suit),

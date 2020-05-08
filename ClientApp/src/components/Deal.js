@@ -36,7 +36,6 @@ export default class Deal extends Component {
           suit={card.suit}
           isSelected={this.state.selectedId === id}
           key={card.id}
-          
         ></Card>
       </div>
     );
