@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Preferanse.Models;
 using Preferanse.Utils;
+using Preferanse.DB;
 
 namespace Preferanse.Controllers
 {
@@ -13,11 +14,6 @@ namespace Preferanse.Controllers
     [Route("[controller]")]
     public class PreferanseController : ControllerBase
     {
-        // private static readonly string[] Summaries = new[]
-        // {
-        //     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        // };
-
         private readonly ILogger<PreferanseController> _logger;
 
         public PreferanseController(ILogger<PreferanseController> logger)
@@ -28,6 +24,16 @@ namespace Preferanse.Controllers
         [HttpGet()]
         public Game Get()
         {
+            // var repo = new MongoRepository();
+            // repo.InsertRecord("elTabble", new TestModel
+            // {
+            //     FirstName = "Good",
+            //     LastName = "Fella",
+            //     Address = new Address {
+            //         City = "Boston",
+            //         PostCode = 100501
+            //     }
+            // });
             var deck = new Deck();
 
             var result = deck.GetAllCards();
@@ -38,12 +44,12 @@ namespace Preferanse.Controllers
             var player1Cards = new List<Card>();
             var player2Cards = new List<Card>();
             var player3Cards = new List<Card>();
-            
-            for(var i= 0; i<=4; i++)
+
+            for (var i = 0; i <= 4; i++)
             {
-                player1Cards.AddRange(list.Skip(i * 6 ).Take(2));
-                player2Cards.AddRange(list.Skip(i * 6 + 2 ).Take(2));
-                player3Cards.AddRange(list.Skip(i * 6 + 4 ).Take(2));
+                player1Cards.AddRange(list.Skip(i * 6).Take(2));
+                player2Cards.AddRange(list.Skip(i * 6 + 2).Take(2));
+                player3Cards.AddRange(list.Skip(i * 6 + 4).Take(2));
             }
 
             var response = new Game();
