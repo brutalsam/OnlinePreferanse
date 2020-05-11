@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Deal from "./Deal"
+import authService from './api-authorization/AuthorizeService';
 
 export class Preferanse extends Component {
   static displayName = Preferanse.name;
@@ -44,7 +45,19 @@ export class Preferanse extends Component {
   }
 
   async populateCardsData() {
-    const response = await fetch("preferanse");
+
+
+    // const token = await authService.getAccessToken();
+    // const response = await fetch('weatherforecast', {
+    //   headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+    // });
+    // const data = await response.json();
+    // this.setState({ forecasts: data, loading: false });
+
+    const token = await authService.getAccessToken();
+    const response = await fetch("preferanse", {
+      headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+    });
     const data = await response.json();
     this.setState({ game: data, loading: false });
   }

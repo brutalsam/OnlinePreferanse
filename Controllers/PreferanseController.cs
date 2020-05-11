@@ -4,26 +4,37 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 using Preferanse.Models;
 using Preferanse.Utils;
 using Preferanse.DB;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace Preferanse.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class PreferanseController : ControllerBase
     {
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<PreferanseController> _logger;
 
-        public PreferanseController(ILogger<PreferanseController> logger)
+        public PreferanseController(ILogger<PreferanseController> logger, UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _logger = logger;
         }
 
         [HttpGet()]
-        public Game Get()
+        public async Task<Game> Get()
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+
+            ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
+            var user2 = await _userManager.FindByIdAsync(userId);
+            string userEmail = applicationUser?.Email; // will give the user's Email
             // var repo = new MongoRepository();
             // repo.InsertRecord("elTabble", new TestModel
             // {
