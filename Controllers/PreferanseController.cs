@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Preferanse.Models;
 using Preferanse.Utils;
-using Preferanse.DB;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
@@ -35,16 +34,7 @@ namespace Preferanse.Controllers
             ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
             var user2 = await _userManager.FindByIdAsync(userId);
             string userEmail = applicationUser?.Email; // will give the user's Email
-            // var repo = new MongoRepository();
-            // repo.InsertRecord("elTabble", new TestModel
-            // {
-            //     FirstName = "Good",
-            //     LastName = "Fella",
-            //     Address = new Address {
-            //         City = "Boston",
-            //         PostCode = 100501
-            //     }
-            // });
+   
             var deck = new Deck();
 
             var result = deck.GetAllCards();

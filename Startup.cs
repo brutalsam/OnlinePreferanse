@@ -101,6 +101,8 @@ namespace Preferanse
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+            DocumentDBRepository<ApplicationUser>.Initialize();
+            DocumentDBRepository<Game>.Initialize();
         }
     }
 }
