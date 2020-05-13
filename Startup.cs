@@ -27,10 +27,22 @@ namespace Preferanse
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                {
+                    options.UseCosmos("https://localhost:8081/",
+                    "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
+                    "PreferanseUsers");
+                    
+                });
 
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>(options =>
+
+                {
+                    options.SignIn.RequireConfirmedAccount = true;
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
@@ -53,8 +65,8 @@ namespace Preferanse
         {
             //if (env.IsDevelopment())
             //{
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+            app.UseDeveloperExceptionPage();
+            app.UseDatabaseErrorPage();
             //}
             //else
             //{
@@ -67,7 +79,7 @@ namespace Preferanse
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            app.UseRouting();   
+            app.UseRouting();
 
             app.UseAuthentication();
             app.UseIdentityServer();
@@ -77,7 +89,7 @@ namespace Preferanse
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();   
+                endpoints.MapRazorPages();
             });
 
             app.UseSpa(spa =>
