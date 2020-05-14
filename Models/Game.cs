@@ -16,18 +16,22 @@ namespace Preferanse.Models
 
     public class Game
     {
-        [Newtonsoft.Json.JsonProperty(PropertyName="id")]
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
         public String Id { get; set; }
         public Player Player1 { get; set; }
         public Player Player2 { get; set; }
         public Player Player3 { get; set; }
         public IEnumerable<Round> Rounds { get; set; }
+        public bool IsEnded { get; set; }
+        public DateTime CreationDate { get; set; }
+        public String Description { get; set; }
         public Game()
         {
             Player1 = new Player();
             Player2 = new Player();
             Player3 = new Player();
             Rounds = new List<Round>();
+            IsEnded = false;
             //Dealer
             //Deal CurrentDeal
             //List<Bets> =>
@@ -35,8 +39,6 @@ namespace Preferanse.Models
             //         Contract
         }
 
-        public DateTime CreationDate { get; set; }
-        public String Description { get; set; }
     }
 
     public class Round

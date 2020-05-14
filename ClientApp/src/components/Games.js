@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import authService from './api-authorization/AuthorizeService'
+import React, { Component } from "react";
+import authService from "./api-authorization/AuthorizeService";
+// import Button from 'react-bootstrap/Button';
 
 export class GamesList extends Component {
   static displayName = GamesList.name;
@@ -14,9 +15,9 @@ export class GamesList extends Component {
   }
 
   static renderGamesTable(games) {
-    console.log(games)
+    console.log(games);
     return (
-      <table className='table table-striped' aria-labelledby="tabelLabel">
+      <table className="table table-striped" aria-labelledby="tabelLabel">
         <thead>
           <tr>
             <th>GameId</th>
@@ -27,28 +28,35 @@ export class GamesList extends Component {
           </tr>
         </thead>
         <tbody>
-          {games.map(game =>
+          {games.map((game) => (
             <tr key={game.Id}>
               <td>{game.id}</td>
               <td>{game.player1.playerName}</td>
               <td>{game.player2.playerName}</td>
               <td>{game.player3.playerName}</td>
             </tr>
-          )}
+          ))}
         </tbody>
       </table>
     );
   }
 
   render() {
-    let contents = this.state.loading
-      ? <p><em>Loading...</em></p>
-      : GamesList.renderGamesTable(this.state.games);
+    let contents = this.state.loading ? (
+      <p>
+        <em>Loading...</em>
+      </p>
+    ) : (
+      GamesList.renderGamesTable(this.state.games)
+    );
 
     return (
       <div>
-        <h1 id="tabelLabel" >Weather forecast</h1>
-        <p>This component demonstrates fetching data from the server.</p>
+        <h1 id="tabelLabel">Active game rooms</h1>
+        <div>
+          {/* <Button variant="Create new game room">Primary</Button>{" "} */}
+          <button type="button">Click Me!</button>
+        </div>
         {contents}
       </div>
     );
@@ -56,8 +64,8 @@ export class GamesList extends Component {
 
   async populateWeatherData() {
     const token = await authService.getAccessToken();
-    const response = await fetch('games', {
-      headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+    const response = await fetch("games", {
+      headers: !token ? {} : { Authorization: `Bearer ${token}` },
     });
     const data = await response.json();
     this.setState({ games: data, loading: false });

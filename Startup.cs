@@ -11,6 +11,7 @@ using Preferanse.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Security.Claims;
 
 namespace Preferanse
 {
@@ -31,7 +32,7 @@ namespace Preferanse
                     options.UseCosmos("https://localhost:8081/",
                     "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
                     "PreferanseUsers");
-                    
+
                 });
 
             services.AddDefaultIdentity<ApplicationUser>(options =>
@@ -50,6 +51,8 @@ namespace Preferanse
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
+            services.Configure<IdentityOptions>(options =>
+                options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
             services.AddControllersWithViews();
             services.AddRazorPages();
 

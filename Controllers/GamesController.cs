@@ -61,7 +61,7 @@ namespace Preferanse.Controllers
                     }
                 }
             };
-            await DocumentDBRepository<Game>.CreateItemAsync(item);
+            //await DocumentDBRepository<Game>.CreateItemAsync(item);
             return CreatedAtAction("Post", item);
         }
     }

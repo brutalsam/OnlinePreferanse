@@ -33,6 +33,7 @@ namespace Preferanse.Controllers
 
             ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
             var user2 = await _userManager.FindByIdAsync(userId);
+            var user3 = await _userManager.GetUserAsync(User);///<----
             string userEmail = applicationUser?.Email; // will give the user's Email
    
             var deck = new Deck();
