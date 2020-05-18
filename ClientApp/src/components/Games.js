@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import TableRow from "./TableRow";
 import authService from "./api-authorization/AuthorizeService";
 // import Button from 'react-bootstrap/Button';
 
@@ -7,15 +8,39 @@ export class GamesList extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { games: [], loading: true };
+    this.state = { games: [], loading: true, selectedId: "dummy" };
+    this.setActive = this.setActive.bind(this);
   }
 
   componentDidMount() {
     this.populateWeatherData();
   }
 
-  static renderGamesTable(games) {
-    console.log(games);
+  setActive(id) {
+    console.log(id)
+    console.log(this.state.selectedId)
+    if (this.state.selectedId == id) {
+      this.setState({ selectedId: "dummy" });
+    } else this.setState({ selectedId: id });
+  }
+
+  renderRow(game) {
+    return (
+        <TableRow
+          values={[
+            game.id,
+            game.player1.playerName,
+            game.player2.playerName,
+            game.player3.playerName,
+          ]}
+          isSelected={this.state.selectedId === game.id}
+          key={game.id}
+          setActiveFunc={ this.setActive}
+        />
+    );
+  }
+
+  renderGamesTable(games) {
     return (
       <table className="table table-striped" aria-labelledby="tabelLabel">
         <thead>
@@ -27,16 +52,7 @@ export class GamesList extends Component {
             {/* <th>Creation date</th> */}
           </tr>
         </thead>
-        <tbody>
-          {games.map((game) => (
-            <tr key={game.Id}>
-              <td>{game.id}</td>
-              <td>{game.player1.playerName}</td>
-              <td>{game.player2.playerName}</td>
-              <td>{game.player3.playerName}</td>
-            </tr>
-          ))}
-        </tbody>
+        <tbody>{games.map((game) => this.renderRow(game))}</tbody>
       </table>
     );
   }
@@ -47,14 +63,13 @@ export class GamesList extends Component {
         <em>Loading...</em>
       </p>
     ) : (
-      GamesList.renderGamesTable(this.state.games)
+      this.renderGamesTable(this.state.games)
     );
 
     return (
       <div>
         <h1 id="tabelLabel">Active game rooms</h1>
         <div>
-          {/* <Button variant="Create new game room">Primary</Button>{" "} */}
           <button type="button">Click Me!</button>
         </div>
         {contents}

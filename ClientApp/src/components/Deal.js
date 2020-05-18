@@ -16,7 +16,12 @@ export default class Deal extends Component {
   }
 
   setActive(id)  {
-    this.setState({ selectedId: id });
+    if (this.state.selectedId == id)
+    {
+      this.setState({ selectedId: -1 });
+    }
+    else
+      this.setState({ selectedId: id });
   }
 
   render() {
@@ -49,15 +54,6 @@ export default class Deal extends Component {
     return (
       <div style={flexDiv}>
         {cards.map((card, id) =>
-          //   <div>
-          //     <Card
-          //       value={card.value}
-          //       suit={card.suit}
-          //       //selected={this.state.selectedId === card.id}
-          //       key={card.id}
-          //       //onClick={this.setActive(card.id)}
-          //     ></Card>
-          //   </div>
           this.renderCard(card, id)
         )}
       </div>
