@@ -6,12 +6,23 @@ namespace Preferanse.Models
 {
     public class Player
     {
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public String Id { get; set; }
         public IEnumerable<Card> Cards { get; set; }
         public string PlayerName { get; set; }
         public Player()
         {
 
         }
+    }
+
+    public class GameCreateModel
+    {
+        [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
+        public String Id { get; set; }
+        public string Player1 { get; set; }
+        public string Player2 { get; set; }
+        public string Player3 { get; set; }
     }
 
     public class Game

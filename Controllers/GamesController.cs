@@ -14,13 +14,14 @@ using System.Security.Claims;
 
 namespace Preferanse.Controllers
 {
-    [ApiController]
+    //[ApiController]
     [Route("[controller]")]
     public class GamesController : ControllerBase
     {
-        public GamesController()
+        private readonly UserManager<ApplicationUser> _userManager;
+        public GamesController(UserManager<ApplicationUser> userManager)
         {
-            
+            _userManager = userManager;
         }
 
         [HttpGet()]
@@ -31,10 +32,16 @@ namespace Preferanse.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(Game item)
+        public async Task<ActionResult> Post(GameCreateModel input)
         {
-            await DocumentDBRepository<Game>.CreateItemAsync(item);
-            return CreatedAtAction("Post", item);
+
+            var itemModel = new Game();
+            itemModel.Player1 = await GetPlayerFromEmail(input.Player1);
+            itemModel.Player2 = await GetPlayerFromEmail(input.Player2);
+            itemModel.Player3 = await GetPlayerFromEmail(input.Player3);
+
+            await DocumentDBRepository<Game>.CreateItemAsync(itemModel);
+            return CreatedAtAction("Post", itemModel);
         }
 
         [HttpPost("CreateSample")]
@@ -63,6 +70,15 @@ namespace Preferanse.Controllers
             };
             //await DocumentDBRepository<Game>.CreateItemAsync(item);
             return CreatedAtAction("Post", item);
+        }
+
+        private async Task<Player> GetPlayerFromEmail(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            return new Player{
+                Id = user.Id,
+                PlayerName = user.UserName
+            };
         }
     }
 }

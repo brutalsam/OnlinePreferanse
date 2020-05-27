@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import TableRow from "./TableRow";
+import CreateGame from "./CreateGame";
 import authService from "./api-authorization/AuthorizeService";
 // import Button from 'react-bootstrap/Button';
 
@@ -8,12 +9,18 @@ export class GamesList extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { games: [], loading: true, selectedId: "dummy" };
+    this.state = { games: [], loading: true, selectedId: "dummy", isCreateGameVisible: false };
     this.setActive = this.setActive.bind(this);
+    this.createGameHandler = this.createGameHandler.bind(this);
   }
 
   componentDidMount() {
     this.populateWeatherData();
+  }
+
+  createGameHandler() {
+    let isVisible = !this.state.isCreateGameVisible;
+    this.setState({ isCreateGameVisible: isVisible });
   }
 
   setActive(id) {
@@ -66,11 +73,18 @@ export class GamesList extends Component {
       this.renderGamesTable(this.state.games)
     );
 
+    let createGame = this.state.isCreateGameVisible ? (
+      <CreateGame/>
+    ) : (
+      ""
+    );
+
     return (
       <div>
         <h1 id="tabelLabel">Active game rooms</h1>
         <div>
-          <button type="button">Click Me!</button>
+          <button type="button" onClick={this.createGameHandler}>Create Game</button>
+          {createGame}
         </div>
         {contents}
       </div>

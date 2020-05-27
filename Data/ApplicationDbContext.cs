@@ -19,9 +19,11 @@ namespace Preferanse.Data
             Database.EnsureCreated();
         }
 
-        // protected override void OnModelCreating(ModelBuilder modelBuilder)
-        // {
-        //     modelBuilder.
-        // }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ApplicationUser>().ToContainer("ApplicationUser");
+            modelBuilder.Entity<ApplicationUser>().HasNoDiscriminator();
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
