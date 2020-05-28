@@ -54,15 +54,15 @@ namespace Preferanse.Controllers
                 player3Cards.AddRange(list.Skip(i * 6 + 4).Take(2));
             }
 
-            var response = new Game();
-            response.Player1.Cards = player1Cards;
-            response.Player1.PlayerName = "Sam";
-            response.Player2.Cards = player2Cards;
-            response.Player2.PlayerName = "Artem";
-            response.Player3.Cards = player3Cards;
-            response.Player3.PlayerName = "Valera";
+            // var response = new Game();
+            // response.Player1.Cards = player1Cards;
+            // response.Player1.PlayerName = "Sam";
+            // response.Player2.Cards = player2Cards;
+            // response.Player2.PlayerName = "Artem";
+            // response.Player3.Cards = player3Cards;
+            // response.Player3.PlayerName = "Valera";
 
-            return response;
+            return null;
         }
     }
 }

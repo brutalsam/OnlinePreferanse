@@ -32,13 +32,14 @@ export default class TableRow extends React.PureComponent {
     };
     return (
       <tr
+        key={this.state.values[0]}
         onClick={() => this.state.setActiveFunc(this.state.values[0])}
         style={tableRowStyle}
         onMouseEnter={this.toggleHover}
         onMouseLeave={this.toggleHover}
       >
-        {this.state.values.map((value) => (
-          <td>{value}</td>
+        {this.state.values.map((value, idx) => (
+          <td key={idx}>{value}</td>
         ))}
       </tr>
     );

@@ -11,10 +11,12 @@ using Preferanse.Utils;
 using Preferanse.Data;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Preferanse.Services;
 
 namespace Preferanse.Controllers
 {
-    //[ApiController]
+    [Authorize]
+    [ApiController]
     [Route("[controller]")]
     public class GamesController : ControllerBase
     {
@@ -25,60 +27,19 @@ namespace Preferanse.Controllers
         }
 
         [HttpGet()]
-        public async Task<ActionResult<Game>> Get()
+        public async Task<ActionResult<GameVievItem>> Get()
         {
             var games = await DocumentDBRepository<Game>.GetItemsAsync(g => true);
-            return Ok(games);
+            return Ok(games.Select(x => x.ToPoco()));
         }
 
         [HttpPost]
         public async Task<ActionResult> Post(GameCreateModel input)
         {
+            var newGame = await GameService.CreateNewGame(input, _userManager);
 
-            var itemModel = new Game();
-            itemModel.Player1 = await GetPlayerFromEmail(input.Player1);
-            itemModel.Player2 = await GetPlayerFromEmail(input.Player2);
-            itemModel.Player3 = await GetPlayerFromEmail(input.Player3);
-
-            await DocumentDBRepository<Game>.CreateItemAsync(itemModel);
-            return CreatedAtAction("Post", itemModel);
-        }
-
-        [HttpPost("CreateSample")]
-        public async Task<ActionResult> CreateSample()
-        {
-            var item = new Game{
-                Player1 = new Player{
-                    PlayerName = "Albert"
-                },
-                Player2 = new Player{
-                    PlayerName = "Ignasio"
-                },
-                Player3 = new Player{
-                    PlayerName = "Horhe"
-                },
-                Rounds = new List<Round> {
-                    new Round {
-                        RoundContract = new Contract {
-                            ContractValue = 5
-                        },
-                        Player1 = new Card(CardValue.Seven, CardSuit.Diamond),
-                        Player2 = new Card(CardValue.Ace, CardSuit.Diamond),
-                        Player3 = new Card(CardValue.King, CardSuit.Diamond),
-                    }
-                }
-            };
-            //await DocumentDBRepository<Game>.CreateItemAsync(item);
-            return CreatedAtAction("Post", item);
-        }
-
-        private async Task<Player> GetPlayerFromEmail(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-            return new Player{
-                Id = user.Id,
-                PlayerName = user.UserName
-            };
+            await DocumentDBRepository<Game>.CreateItemAsync(newGame);
+            return CreatedAtAction("Post", newGame);
         }
     }
 }

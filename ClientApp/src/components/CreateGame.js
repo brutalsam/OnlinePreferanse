@@ -13,6 +13,7 @@ class CreateGame extends Component {
       user1: "brutalsam@gmail.com",
       user2: "test1@gmail.com",
       user3: "test2@gmail.com",
+      description: "the game",
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -57,37 +58,49 @@ class CreateGame extends Component {
       case "player3":
         this.setState({ user3: event.target.value });
         break;
+      case "description":
+        this.setState({ description: event.target.value });
+        break;
 
       default:
         break;
     }
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     alert(
       "Отправленное имя: " +
         this.state.user1 +
         this.state.user2 +
-        this.state.user3
+        this.state.user3 +
+        this.state.description
     );
     event.preventDefault();
-    const data = new FormData(event.target);
+    // const data = new FormData(event.target);
 
-    data.set("Player1", this.state.user1);
-    data.set("Player2", this.state.user2);
-    data.set("Player3", this.state.user3);
+    // data.set("Player1", this.state.user1);
+    // data.set("Player2", this.state.user2);
+    // data.set("Player3", this.state.user3);
+    // data.set("Description", this.state.description);
 
-    const token = authService.getAccessToken();
-    fetch("games", {
-      headers: !token ? {} : { Authorization: `Bearer ${token}` },
+    const token = await authService.getAccessToken();
+    console.log(token);
+    let res = await fetch("games", {
+      headers: !token
+        ? {}
+        : {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json, text/plain",
+            "Content-Type": "application/json;charset=UTF-8",
+          },
       method: "POST",
-      body: data,
+      body: JSON.stringify({Player1: this.state.user1, Player2: this.state.user2, Player3: this.state.user3, Description: this.state.description}),
     });
-
+    console.log(res);
     // const { history } = this.props;
     // history.push("/gamesList");
-    window.location.reload();
-};
+    //  window.location.reload();
+  }
 
   authenticatedView() {
     const divStyle = {
@@ -98,7 +111,7 @@ class CreateGame extends Component {
         <label>Create Game:</label>
         <div>
           <label>
-            Player1 email
+            Player1 email:
             <input
               label="User1"
               id="player1"
@@ -110,7 +123,7 @@ class CreateGame extends Component {
         </div>
         <div>
           <label>
-            Player2 email
+            Player2 email:
             <input
               label="User2"
               id="player2"
@@ -122,12 +135,24 @@ class CreateGame extends Component {
         </div>
         <div>
           <label>
-            Player3 email
+            Player3 email:
             <input
               label="User3"
               id="player3"
               type="text"
               value={this.state.user3}
+              onChange={this.handleChange}
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Description:
+            <input
+              label="Desctiption"
+              id="description"
+              type="text"
+              value={this.state.description}
               onChange={this.handleChange}
             />
           </label>

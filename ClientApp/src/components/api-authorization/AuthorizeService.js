@@ -81,6 +81,7 @@ export class AuthorizeService {
     async completeSignIn(url) {
         try {
             await this.ensureUserManagerInitialized();
+            console.log("url:" + url);
             const user = await this.userManager.signinCallback(url);
             this.updateState(user);
             return this.success(user && user.state);

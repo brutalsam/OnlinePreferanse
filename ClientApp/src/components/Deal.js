@@ -16,7 +16,7 @@ export default class Deal extends Component {
   }
 
   setActive(id)  {
-    if (this.state.selectedId == id)
+    if (this.state.selectedId === id)
     {
       this.setState({ selectedId: -1 });
     }

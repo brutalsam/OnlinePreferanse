@@ -26,19 +26,20 @@ export class GamesList extends Component {
   setActive(id) {
     console.log(id)
     console.log(this.state.selectedId)
-    if (this.state.selectedId == id) {
+    if (this.state.selectedId === id) {
       this.setState({ selectedId: "dummy" });
     } else this.setState({ selectedId: id });
   }
 
   renderRow(game) {
+    console.log(game);
     return (
         <TableRow
           values={[
             game.id,
-            game.player1.playerName,
-            game.player2.playerName,
-            game.player3.playerName,
+            game.players[0].playerName,
+            game.players[1].playerName,
+            game.players[2].playerName,
           ]}
           isSelected={this.state.selectedId === game.id}
           key={game.id}
