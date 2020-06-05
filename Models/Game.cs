@@ -9,7 +9,6 @@ namespace Preferanse.Models
     {
         [Newtonsoft.Json.JsonProperty(PropertyName = "id")]
         public String Id { get; set; }
-        public IEnumerable<Card> Cards { get; set; }
         public string PlayerName { get; set; }
         public Player()
         {

@@ -27,7 +27,7 @@ namespace Preferanse.Controllers
         }
 
         [HttpGet()]
-        public async Task<Game> Get()
+        public async Task<Game> Get(string gameId)
         {
             // var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
 
@@ -36,24 +36,7 @@ namespace Preferanse.Controllers
             // var user3 = await _userManager.GetUserAsync(User);
             // string userEmail = applicationUser?.Email; // will give the user's Email
    
-            var deck = new Deck();
-
-            var result = deck.GetAllCards();
-            var list = result.ToList();
-            list.Shuffle();
-
-            // Draw on  three players
-            var player1Cards = new List<Card>();
-            var player2Cards = new List<Card>();
-            var player3Cards = new List<Card>();
-
-            for (var i = 0; i <= 4; i++)
-            {
-                player1Cards.AddRange(list.Skip(i * 6).Take(2));
-                player2Cards.AddRange(list.Skip(i * 6 + 2).Take(2));
-                player3Cards.AddRange(list.Skip(i * 6 + 4).Take(2));
-            }
-
+            
             // var response = new Game();
             // response.Player1.Cards = player1Cards;
             // response.Player1.PlayerName = "Sam";

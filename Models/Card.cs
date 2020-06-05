@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Preferanse.Utils;
 
 namespace Preferanse.Models
 {
@@ -57,8 +58,14 @@ namespace Preferanse.Models
 
         public IEnumerable<Card> GetAllCards()
         {
-            //return cards.Select(x => x.ToString());
             return cards;
+        }
+
+        public IEnumerable<Card> GetAllShuffledCards()
+        {
+            var list = cards.ToList();
+            list.Shuffle();
+            return list;
         }
     }
 }

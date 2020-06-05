@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import authService from "./api-authorization/AuthorizeService";
-import { withRouter } from "react-router";
+// import { withRouter } from "react-router";
 
 class CreateGame extends Component {
   static displayName = CreateGame.name;
@@ -76,12 +76,6 @@ class CreateGame extends Component {
         this.state.description
     );
     event.preventDefault();
-    // const data = new FormData(event.target);
-
-    // data.set("Player1", this.state.user1);
-    // data.set("Player2", this.state.user2);
-    // data.set("Player3", this.state.user3);
-    // data.set("Description", this.state.description);
 
     const token = await authService.getAccessToken();
     console.log(token);
@@ -94,12 +88,15 @@ class CreateGame extends Component {
             "Content-Type": "application/json;charset=UTF-8",
           },
       method: "POST",
-      body: JSON.stringify({Player1: this.state.user1, Player2: this.state.user2, Player3: this.state.user3, Description: this.state.description}),
+      body: JSON.stringify({
+        Player1: this.state.user1,
+        Player2: this.state.user2,
+        Player3: this.state.user3,
+        Description: this.state.description,
+      }),
     });
     console.log(res);
-    // const { history } = this.props;
-    // history.push("/gamesList");
-    //  window.location.reload();
+    window.location.reload();
   }
 
   authenticatedView() {
@@ -176,4 +173,4 @@ class CreateGame extends Component {
   }
 }
 
-export default withRouter(CreateGame);
+export default CreateGame;

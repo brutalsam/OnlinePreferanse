@@ -26,11 +26,26 @@ namespace Preferanse.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet()]
-        public async Task<ActionResult<GameVievItem>> Get()
+        [HttpGet("GameVievItem")]
+        public async Task<ActionResult<GameVievItem>> GetGameVievItem(string gameId = null)
         {
-            var games = await DocumentDBRepository<Game>.GetItemsAsync(g => true);
+            IEnumerable<Game> games;
+            if (String.IsNullOrWhiteSpace(gameId))
+            {
+                games = await DocumentDBRepository<Game>.GetItemsAsync(g => true);
+            }
+            else
+            {
+                games = await DocumentDBRepository<Game>.GetItemsAsync(g => g.Id == gameId);
+            }
+            
             return Ok(games.Select(x => x.ToPoco()));
+        }
+        [HttpGet()]
+        public async Task<ActionResult<GameVievItem>> Get(string gameId)
+        {
+            var game = await DocumentDBRepository<Game>.GetItemAsync(gameId);
+            return Ok(game);
         }
 
         [HttpPost]

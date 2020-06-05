@@ -7,11 +7,23 @@ export class Preferanse extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { dame: null, loading: true };
+    const {location} = this.props
+    this.state = { dame: null, loading: true, gameId: location.state };
+    
+    // console.log(props);
+    this.isLastDealHasContract = this.isLastDealHasContract.bind(this);
+    this.renderDeals = this.renderDeals.bind(this);
   }
 
   componentDidMount() {
     this.populateCardsData();
+  }
+
+  isLastDealHasContract() {
+    let lastDeal = this.state.game.deals[this.state.game.deals.length - 1];
+    console.log(lastDeal);
+    
+    return lastDeal.dealContract !== null ;
   }
 
   render() {
@@ -20,7 +32,7 @@ export class Preferanse extends Component {
         <em>Loading...</em>
       </p>
     ) : (
-      Preferanse.renderDeals(this.state.game)
+      this.renderDeals(this.state.game)
     );
 
     return (
@@ -31,34 +43,31 @@ export class Preferanse extends Component {
     );
   }
 
-  static renderDeals(game) {
+  renderDeals(game) {
     const flexDiv = {
       display: "flex",
     };
+    console.log(this.isLastDealHasContract())
+    let contract = this.isLastDealHasContract ? "HasContract" : "No Contract";
     return (
       <div>
-        <Deal cards={game.player2.cards} playerName={game.player2.playerName}></Deal>
+        {contract}
+        {/* <Deal cards={game.player2.cards} playerName={game.player2.playerName}></Deal>
         <Deal cards={game.player3.cards} playerName={game.player3.playerName}></Deal>
-        <Deal cards={game.player1.cards} playerName={game.player1.playerName}></Deal>
+        <Deal cards={game.player1.cards} playerName={game.player1.playerName}></Deal> */}
       </div>
     );
   }
 
   async populateCardsData() {
-
-
-    // const token = await authService.getAccessToken();
-    // const response = await fetch('weatherforecast', {
-    //   headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-    // });
-    // const data = await response.json();
-    // this.setState({ forecasts: data, loading: false });
-
     const token = await authService.getAccessToken();
-    const response = await fetch("preferanse", {
-      headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+    const response = await fetch(`games?gameId=${this.state.gameId}`, {
+      headers: !token ? {} : { 'Authorization': `Bearer ${token}`  }
     });
     const data = await response.json();
+
+    console.log("Preferance data");
+    console.log(data);
     this.setState({ game: data, loading: false });
   }
 }
