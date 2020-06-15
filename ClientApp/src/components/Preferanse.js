@@ -11,7 +11,6 @@ export class Preferanse extends Component {
     const {location} = this.props
     this.state = { dame: null, loading: true, gameId: location.state };
     
-    // console.log(props);
     this.isLastDealHasContract = this.isLastDealHasContract.bind(this);
     this.renderDeals = this.renderDeals.bind(this);
   }
@@ -22,9 +21,6 @@ export class Preferanse extends Component {
 
   isLastDealHasContract() {
     let lastDeal = this.state.game.deals[this.state.game.deals.length - 1];
-    console.log("lastDeal");
-    console.log(lastDeal);
-    console.log(lastDeal.dealContract !== null);
     return lastDeal.dealContract !== null ;
   }
 
@@ -49,9 +45,7 @@ export class Preferanse extends Component {
     const flexDiv = {
       display: "flex",
     };
-    console.log(this.isLastDealHasContract())
     let contract = this.isLastDealHasContract() ? "HasContract" : <Bidding/>;
-    console.log(contract);
     return (
       <div>
         {contract}
@@ -68,9 +62,6 @@ export class Preferanse extends Component {
       headers: !token ? {} : { 'Authorization': `Bearer ${token}`  }
     });
     const data = await response.json();
-
-    console.log("Preferance data");
-    console.log(data);
     this.setState({ game: data, loading: false });
   }
 }

@@ -18,7 +18,6 @@ class CreateGame extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    console.log(this.props);
   }
 
   async populateState() {
@@ -78,7 +77,6 @@ class CreateGame extends Component {
     event.preventDefault();
 
     const token = await authService.getAccessToken();
-    console.log(token);
     let res = await fetch("games", {
       headers: !token
         ? {}
@@ -95,7 +93,6 @@ class CreateGame extends Component {
         Description: this.state.description,
       }),
     });
-    console.log(res);
     window.location.reload();
   }
 

@@ -34,15 +34,12 @@ export class GamesList extends Component {
   }
 
   setActive(id) {
-    console.log(id);
-    console.log(this.state.selectedId);
     if (this.state.selectedId === id) {
       this.setState({ selectedId: "dummy" });
     } else this.setState({ selectedId: id });
   }
 
   renderRow(game) {
-    console.log(game);
     return (
       <TableRow
         values={[
@@ -113,6 +110,5 @@ export class GamesList extends Component {
     });
     const data = await response.json();
     this.setState({ games: data, loading: false });
-    console.log(data);
   }
 }

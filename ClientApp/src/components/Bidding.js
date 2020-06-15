@@ -57,7 +57,6 @@ export default class Bidding extends React.PureComponent {
         items.push(<br />);
         items.push(<button key='30'>Mieserre</button>);
         items.push(<button key='40'>Pass</button>);
-        console.log(items);
         return (
             <div>
                 <h1>BIDDING</h1>

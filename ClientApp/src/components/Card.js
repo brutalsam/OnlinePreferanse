@@ -45,7 +45,6 @@ export default class Card extends React.PureComponent  {
       margin: "5px",
       marginTop: this.state.hover || this.state.isSelected ? "20px" : "40px",
     };
-    console.log(`render TableRow :: ${this.state.value}`);
     return (
       <div
         style={playingCard}
