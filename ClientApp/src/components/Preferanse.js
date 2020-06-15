@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Deal from "./Deal"
+import Bidding from "./Bidding"
 import authService from './api-authorization/AuthorizeService';
 
 export class Preferanse extends Component {
@@ -21,8 +22,9 @@ export class Preferanse extends Component {
 
   isLastDealHasContract() {
     let lastDeal = this.state.game.deals[this.state.game.deals.length - 1];
+    console.log("lastDeal");
     console.log(lastDeal);
-    
+    console.log(lastDeal.dealContract !== null);
     return lastDeal.dealContract !== null ;
   }
 
@@ -48,11 +50,12 @@ export class Preferanse extends Component {
       display: "flex",
     };
     console.log(this.isLastDealHasContract())
-    let contract = this.isLastDealHasContract ? "HasContract" : "No Contract";
+    let contract = this.isLastDealHasContract() ? "HasContract" : <Bidding/>;
+    console.log(contract);
     return (
       <div>
         {contract}
-        {/* <Deal cards={game.player2.cards} playerName={game.player2.playerName}></Deal>
+        {/*<Deal cards={game.player2.cards} playerName={game.player2.playerName}></Deal>
         <Deal cards={game.player3.cards} playerName={game.player3.playerName}></Deal>
         <Deal cards={game.player1.cards} playerName={game.player1.playerName}></Deal> */}
       </div>

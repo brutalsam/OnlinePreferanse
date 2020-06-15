@@ -154,7 +154,7 @@ class CreateGame extends Component {
             />
           </label>
         </div>
-        <input type="submit" value="Отправить" />
+        <input type="submit" value="Create" />
       </form>
     );
   }
