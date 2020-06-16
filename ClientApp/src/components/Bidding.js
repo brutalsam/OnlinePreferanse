@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import * as signalR from "@microsoft/signalr";
 
 export default class Bidding extends React.PureComponent {
     static displayName = Bidding.name;
@@ -6,13 +7,44 @@ export default class Bidding extends React.PureComponent {
         super(props);
         this.state = {
             selectedContract: -1,
+            connection: null,
         };
 
         this.buttonClickHandler = this.buttonClickHandler.bind(this);
     }
 
     buttonClickHandler(index) {
-        this.setState({ selectedContract: index });
+        //this.setState({ selectedContract: index });
+        console.log(`Selected Buttor with index ${index.toString()}`)
+        this.state.connection.invoke("ServerBiddingMessage", "Sam", index.toString()).catch(function (err) {
+            return console.error(err.toString());
+        });
+    }
+
+    componentDidMount() {
+        var connection = new signalR.HubConnectionBuilder()
+            .withUrl("/biddingHub")
+            // .ConfigureLogging(logging => {
+            //     logging.SetMinimumLevel(signalR.LogLevel.Information);
+            //     logging.AddConsole();
+            // })
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+
+        connection.on("BiddingMessage", function (user, message) {
+            var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            var encodedMsg = user + " says " + msg;
+            console.log(`got message ${encodedMsg}`);
+            this.setState({ selectedContract: encodedMsg }.bind(this));
+        });
+
+        connection.start().then(function () {
+            console.log("Connection with biddingHub established");
+        }).catch(function (err) {
+            return console.error(err.toString());
+        });
+
+        this.setState({ connection });
     }
 
     static getSuitSymbol(suitNum) {
