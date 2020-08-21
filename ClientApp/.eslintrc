@@ -1,0 +1,20 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": false,
+    "codeFrame": true
+  },
+  "extends": [
+    "prettier",
+    "prettier/react",
+    "prettier/@typescript-eslint",
+    "prettier/standard"
+  ],
+  "plugins": ["prettier",
+    "react"]
+}
