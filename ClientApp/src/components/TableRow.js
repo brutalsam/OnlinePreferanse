@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 
-export default class TableRow extends React.PureComponent {
+export default class TableRow extends PureComponent {
   static displayName = TableRow.name;
 
   constructor(props) {

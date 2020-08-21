@@ -37,7 +37,7 @@ class CreateGame extends Component {
   }
 
   render() {
-    const { isAuthenticated, userName } = this.state;
+    const { isAuthenticated } = this.state;
     if (!isAuthenticated) {
       return this.anonymousView();
     } else {
@@ -77,7 +77,7 @@ class CreateGame extends Component {
     event.preventDefault();
 
     const token = await authService.getAccessToken();
-    let res = await fetch("games", {
+    let response = await fetch("games", {
       headers: !token
         ? {}
         : {
@@ -93,13 +93,13 @@ class CreateGame extends Component {
         Description: this.state.description,
       }),
     });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
     window.location.reload();
   }
 
   authenticatedView() {
-    const divStyle = {
-      borderStyle: "solid",
-    };
     return (
       <form onSubmit={this.handleSubmit}>
         <label>Create Game:</label>

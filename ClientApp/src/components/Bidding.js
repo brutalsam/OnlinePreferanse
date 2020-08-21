@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { PureComponent }  from "react";
 import * as signalR from "@microsoft/signalr";
 import authService from "./api-authorization/AuthorizeService";
 
-export default class Bidding extends React.PureComponent {
+export default class Bidding extends PureComponent {
   static displayName = Bidding.name;
   constructor(props) {
     super(props);
@@ -39,7 +39,6 @@ export default class Bidding extends React.PureComponent {
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;");
-      var encodedMsg = user + " says " + msg;
       this.setState({ selectedContract: msg, selectedContractByUser: user });
     });
 
@@ -88,10 +87,10 @@ export default class Bidding extends React.PureComponent {
         let value = Math.floor(index / 5) + 6;
         cardName = `${value} ${suit}`;
         break;
-      case index == 30:
+      case index === 30:
         cardName = "Mieserre";
         break;
-      case index == 40:
+      case index === 40:
         cardName = "Pass";
         break;
       default:
@@ -105,7 +104,7 @@ export default class Bidding extends React.PureComponent {
   render() {
     const items = [];
     for (let i = 0; i < 25; i++) {
-      if (i % 5 == 0 && i > 0) {
+      if (i % 5 === 0 && i > 0) {
         items.push(<br />);
       }
       items.push(
@@ -129,7 +128,7 @@ export default class Bidding extends React.PureComponent {
       <div>
         <h1>BIDDING</h1>
         <p>
-          Selected contract [{Bidding.getCardName(this.state.selectedContract)}]
+          Selected contract [{Bidding.getCardName(Number(this.state.selectedContract))}]
           by user [{this.state.selectedContractByUser}]
         </p>
         {items}

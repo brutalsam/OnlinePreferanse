@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 
-export default class Card extends React.PureComponent  {
+export default class Card extends PureComponent  {
   static displayName = Card.name;
 
   constructor(props) {

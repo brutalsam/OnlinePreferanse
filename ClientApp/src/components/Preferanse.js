@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Deal from "./Deal";
+//  
 import Bidding from "./Bidding";
 import authService from "./api-authorization/AuthorizeService";
 
@@ -42,9 +42,6 @@ export class Preferanse extends Component {
   }
 
   renderDeals(game) {
-    const flexDiv = {
-      display: "flex",
-    };
     let contract = this.isLastDealHasContract() ? "HasContract" : <Bidding />;
     return (
       <div>

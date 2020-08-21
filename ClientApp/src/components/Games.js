@@ -22,7 +22,7 @@ export class GamesList extends Component {
   }
 
   componentDidMount() {
-    this.populateWeatherData();
+    this.populateGamesData();
   }
 
   createGameHandler() {
@@ -103,7 +103,7 @@ export class GamesList extends Component {
     );
   }
 
-  async populateWeatherData() {
+  async populateGamesData() {
     const token = await authService.getAccessToken();
     const response = await fetch("games/GameVievItem", {
       headers: !token ? {} : { Authorization: `Bearer ${token}` },
