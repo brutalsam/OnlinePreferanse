@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import * as signalR from "@microsoft/signalr";
+import authService from "./api-authorization/AuthorizeService";
 
 export default class Bidding extends React.PureComponent {
   static displayName = Bidding.name;
@@ -7,17 +8,21 @@ export default class Bidding extends React.PureComponent {
     super(props);
     this.state = {
       selectedContract: -1,
+      selectedContractByUser: "",
       connection: null,
     };
 
     this.buttonClickHandler = this.buttonClickHandler.bind(this);
   }
 
-  buttonClickHandler(index) {
-    //this.setState({ selectedContract: index });
-    console.log(`Selected Buttor with index ${index.toString()}`);
+  async buttonClickHandler(index) {
+    const userName = await authService.getUser();
     this.state.connection
-      .invoke("ServerBiddingMessage", "Sam", index.toString())
+      .invoke(
+        "ServerBiddingMessage",
+        userName.preferred_username,
+        index.toString()
+      )
       .catch(function (err) {
         return console.error(err.toString());
       });
@@ -26,21 +31,16 @@ export default class Bidding extends React.PureComponent {
   componentDidMount() {
     var connection = new signalR.HubConnectionBuilder()
       .withUrl("/biddingHub")
-      // .ConfigureLogging(logging => {
-      //     logging.SetMinimumLevel(signalR.LogLevel.Information);
-      //     logging.AddConsole();
-      // })
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
-    connection.on("BiddingMessage", function (user, message) {
+    connection.on("BiddingMessage", (user, message) => {
       var msg = message
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;");
       var encodedMsg = user + " says " + msg;
-      console.log(`got message ${encodedMsg}`);
-      this.setState({ selectedContract: encodedMsg }.bind(this));
+      this.setState({ selectedContract: msg, selectedContractByUser: user });
     });
 
     connection
@@ -56,7 +56,7 @@ export default class Bidding extends React.PureComponent {
   }
 
   static getSuitSymbol(suitNum) {
-    let suitName = "unknown";
+    let suitName = "unknown suit";
     switch (suitNum) {
       case 0:
         suitName = "♠";
@@ -81,9 +81,25 @@ export default class Bidding extends React.PureComponent {
   }
 
   static getCardName(index) {
-    let suit = Bidding.getSuitSymbol(index % 5);
-    let value = Math.floor(index / 5) + 6;
-    return `${value} ${suit}`;
+    let cardName = "UNKNOWN";
+    switch (true) {
+      case index < 26:
+        let suit = Bidding.getSuitSymbol(index % 5);
+        let value = Math.floor(index / 5) + 6;
+        cardName = `${value} ${suit}`;
+        break;
+      case index == 30:
+        cardName = "Mieserre";
+        break;
+      case index == 40:
+        cardName = "Pass";
+        break;
+      default:
+        cardName = "case Unknown";
+        break;
+    }
+
+    return cardName;
   }
 
   render() {
@@ -99,12 +115,23 @@ export default class Bidding extends React.PureComponent {
       );
     }
     items.push(<br />);
-    items.push(<button key="30">Mieserre</button>);
-    items.push(<button key="40">Pass</button>);
+    items.push(
+      <button key="30" onClick={() => this.buttonClickHandler(30)}>
+        Mieserre
+      </button>
+    );
+    items.push(
+      <button key="40" onClick={() => this.buttonClickHandler(40)}>
+        Pass
+      </button>
+    );
     return (
       <div>
         <h1>BIDDING</h1>
-        <p>Selected card {Bidding.getCardName(this.state.selectedContract)}</p>
+        <p>
+          Selected contract [{Bidding.getCardName(this.state.selectedContract)}]
+          by user [{this.state.selectedContractByUser}]
+        </p>
         {items}
       </div>
     );

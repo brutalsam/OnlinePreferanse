@@ -37,7 +37,6 @@ namespace Preferanse
                 });
 
             services.AddDefaultIdentity<ApplicationUser>(options =>
-
                 {
                     options.SignIn.RequireConfirmedAccount = true;
                     options.Password.RequireDigit = false;
@@ -55,7 +54,7 @@ namespace Preferanse
             services.Configure<IdentityOptions>(options =>
                 options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
             services.AddControllersWithViews();
-            services.AddRazorPages();
+            // services.AddRazorPages();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -89,9 +88,9 @@ namespace Preferanse
             app.UseSpaStaticFiles();
 
             app.UseRouting();
-
-            app.UseAuthentication();
             app.UseIdentityServer();
+            app.UseAuthentication();
+            
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
